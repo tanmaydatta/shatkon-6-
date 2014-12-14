@@ -46,8 +46,8 @@ void controlhex::move()
     }
 
 //    Board b1;
-//    b1.arr[0][0]=b1.arr[1][3]=1;
-//    b1.arr[0][2]=2;
+//    b1.arr[0][0]=2;
+//    b1.arr[1][3]=1;
 //    PlayerMove *p1=new PlayerMove(b1);
 //    p1->generateLeft();
 //    MIND = 10000;
@@ -57,7 +57,8 @@ void controlhex::move()
 //    vector<pair<int,int> >v1=b1.connectedPoints(0,2,2);
 //    dfs(0,2,v1,arr1,b1,2);
 //    cout<<MIND<<" "<<X<<endl;
-
+//    pair<int,int> p11=closestPair(1,3,1,b1,1);
+//    cout<<p11.first<<" "<<p11.second<<endl;
     PlayerMove *p=new PlayerMove(b);
     root = p;
     tree(15,root,NULL);
@@ -85,7 +86,7 @@ void controlhex::move()
     if(whoHasWon(root->left->b)==2)
         n=root->left;
     // if(n1==2)
-//        n=root->left;
+//        n=root->right;
     int flag=0;
         int flag1=0,flag2=0;
         for(int i=0;i<=7;i++)
@@ -208,8 +209,8 @@ void controlhex::move()
                     break;
             }
         }
+        cout<<whoHasWon(b)<<endl;
         deleteTree(NULL,root);
-
 }
 
 void controlhex::focusInEvent(QFocusEvent*)

@@ -201,13 +201,26 @@ void dfs(int x,int y, vector<pair<int,int> > vec,int a[20][20],Board b,int z)
                                     temp=v1[i]+v2[k];
                                     // if(vec[j].first==0||vec[j].first==7||vec[j].second==15||vec[j].second==0||vec[j].second==14)
                                     // 	temp=0;
-                                    if(temp<=MIND)
+                                    if(temp<MIND)
                                     {
                                         // cout<<"kwhbcjvwekckwebvcjkvwerjcv";
+//                                        cout<<v1[i]<<" "<<v2[k]<<endl;
                                         MIND=temp;
                                         // P=make_pair(x,y);
-                                        X=vec[j].first;Y=vec[j].second;
+                                        if(v1[i]>v2[k]&&v2[k]>0)
+                                        {
+                                            X=vec[j].first;Y=vec[j].second;
+                                        }
+                                        else
+                                        {
+                                            X=x;Y=y;
+                                        }
+                                        array[0]=array[1]=array[2]=array[3]=10000;
+                                        int arr[20][20]={0};
+                                        isConnectedToEdge(X,Y,arr,b);
+                                        if(array[k])
                                         dir=k;
+                                        else dir=i;
                                     }
                                 }
                             }
@@ -274,11 +287,10 @@ class PlayerMove
         b=B;
         left=right=NULL;
     }
-    ComputerMove* newNode(Board,char);
+
     void generateLeft();
     void generateRight();
 };
-
 class ComputerMove
 {
     public:
@@ -293,15 +305,15 @@ class ComputerMove
         type=t;
         child=NULL;
     }
-    PlayerMove* newNode(Board b)
-    {
-      PlayerMove* node = new PlayerMove(b);
-      return(node);
-    }
+
     void generateChild();
 };
-
-ComputerMove* PlayerMove::newNode(Board b,char type)
+PlayerMove* newNode(Board b)
+{
+  PlayerMove* node = new PlayerMove(b);
+  return(node);
+}
+ComputerMove* newNode(Board b,char type)
 {
   ComputerMove* node = new ComputerMove(b,type);
   return(node);
@@ -336,7 +348,7 @@ pair<int,pair<int,int> > edgeDistance(int x,int y,int d,Board b,int visited[20][
             isConnectedToEdge(v1[i].first,v1[i].second,arr,b);
             if(d==1&&array[1]==0)
                 return make_pair(p.second,make_pair(x,y));
-            if(d==3&&array[3    ]==0)
+            if(d==3&&array[3]==0)
                 return make_pair(p.second,make_pair(x,y));
         }
     }
@@ -488,7 +500,8 @@ void PlayerMove::generateRight()
                     dfs(i,j,v,arr,b,1);
                     if(MIND<mind&&X>-1)
                     {
-    //                    cout<<"yes\n"<<X<<" "<<Y<<" "<<dir<<endl;
+
+//                        cout<<"yes\n"<<i<<" "<<j<<" "<<dir<<endl;
                         p=closestPair(X,Y,dir,b,1);
     //                    cout<<"yesPair\n"<<p.first<<" "<<p.second<<endl;
                         if(p.first>-1) {
@@ -674,7 +687,7 @@ int Board::isConnected(int x1,int y1,int x2,int y2,int a[20][20])
     a[x1][y1]=1;
     if(x1==x2&&y1==y2)
         return 1;
-    vector <pair<int,int> > vec=connectedPoints(x1,y1,2);
+    vector <pair<int,int> > vec=connectedPoints(x1,y1,arr[x1][y1]);
     for (int j = 0; j < vec.size(); j++)
         //if(a[v][i] && !vec[v][j])
         if (!a[vec[j].first][vec[j].second])
