@@ -61,7 +61,7 @@ void controlhex::move()
 //    cout<<p11.first<<" "<<p11.second<<endl;
     PlayerMove *p=new PlayerMove(b);
     root = p;
-    tree(15,root,NULL);
+    tree(11,root,NULL);
     ComputerMove *l,*r;
     l=root->left;
     r=root->right;

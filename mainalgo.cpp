@@ -201,7 +201,7 @@ void dfs(int x,int y, vector<pair<int,int> > vec,int a[20][20],Board b,int z)
                                     temp=v1[i]+v2[k];
                                     // if(vec[j].first==0||vec[j].first==7||vec[j].second==15||vec[j].second==0||vec[j].second==14)
                                     // 	temp=0;
-                                    if(temp<MIND)
+                                    if(temp<=MIND)
                                     {
                                         // cout<<"kwhbcjvwekckwebvcjkvwerjcv";
 //                                        cout<<v1[i]<<" "<<v2[k]<<endl;
@@ -299,24 +299,25 @@ class ComputerMove
 
     PlayerMove *child;
 
-    ComputerMove(Board B,char t)
+    ComputerMove(Board B)
     {
         b=B;
-        type=t;
         child=NULL;
     }
 
     void generateChild();
 };
-PlayerMove* newNode(Board b)
+//PlayerMove* newNode(Board b)
+//{
+//  PlayerMove* node = new PlayerMove(b);
+//  return(node);
+//}
+template <typename T>
+T * newNode (Board b,T * x)
 {
-  PlayerMove* node = new PlayerMove(b);
-  return(node);
-}
-ComputerMove* newNode(Board b,char type)
-{
-  ComputerMove* node = new ComputerMove(b,type);
-  return(node);
+    T *node;
+    node = new T(b);
+    return node;
 }
 
 pair<int,pair<int,int> > edgeDistance(int x,int y,int d,Board b,int visited[20][20],int c)
@@ -455,7 +456,7 @@ void PlayerMove::generateLeft()
         //cout<<"left found"<<endl;
         Board B=b;
         B.arr[p.first][p.second]=2;
-        left = newNode(B,'o');
+        left = newNode(B,left);
 //        cout<<mind<<" "<<x<<" "<<y<<endl;
     }
     else {
@@ -474,7 +475,7 @@ void PlayerMove::generateLeft()
             if(f)
                 break;
         }
-        left = newNode(B,'o');
+        left = newNode(B,left);
     }
 }
 
@@ -535,7 +536,7 @@ void PlayerMove::generateRight()
 
         Board B=b;
         B.arr[p.first][p.second]=2;
-        right = newNode(B,'d');
+        right = newNode(B,right);
 //        if(right){}
 //            cout<<"right found"<<mind<<endl;
     }
@@ -555,7 +556,7 @@ void PlayerMove::generateRight()
             if(f)
                 break;
         }
-        right = newNode(B,'d');
+        right = newNode(B,right);
     }
 }
 
@@ -619,7 +620,7 @@ void ComputerMove::generateChild()
 //        cout<<"child found"<<endl;
         Board B=b;
         B.arr[p.first][p.second]=1;
-        child = newNode(B);
+        child = newNode(B,child);
     }
     else {
         Board B=b;
@@ -646,7 +647,7 @@ void ComputerMove::generateChild()
             if(f)
                 break;
         }
-        child = newNode(B);
+        child = newNode(B,child);
     }
 }
 
