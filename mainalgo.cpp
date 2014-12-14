@@ -133,14 +133,6 @@ public:
         {
             Q.pop();
         }
-        // Board b1;
-        // for(int i=0;i<16;i++)
-        // {
-        // 	for(int j=0;j<16;j++)
-        // 	{
-        // 		b1.arr[i][j]=arr[i][j];
-        // 	}
-        // }
         Q.push(make_pair(make_pair(x,y),0));
         isConnectedToEdge(x,y,a,b);
         bfs(x,y,a,b,0);
@@ -209,7 +201,7 @@ void dfs(int x,int y, vector<pair<int,int> > vec,int a[20][20],Board b,int z)
                                     temp=v1[i]+v2[k];
                                     // if(vec[j].first==0||vec[j].first==7||vec[j].second==15||vec[j].second==0||vec[j].second==14)
                                     // 	temp=0;
-                                    if(temp<MIND)
+                                    if(temp<=MIND)
                                     {
                                         // cout<<"kwhbcjvwekckwebvcjkvwerjcv";
                                         MIND=temp;
@@ -244,7 +236,9 @@ void bfs(int x,int y,int visited[20][20],Board b,int c)
         array[3]=min(p.second,array[3]);
     // if(array[0]!=10000&&array[1]!=10000&&array[2]!=10000&&array[3]!=10000)
     // 	return ;
-    vector<pair<int,int> > v=b.connectedPoints(x,y,0);
+    vector<pair<int,int> > v=b.connectedPoints(x,y,0),v1=b.connectedPoints(x,y,b.arr[x][y]);
+    for(i=0;i<v1.size();i++)
+        v.push_back(v1[i]);
     // cout<<v.size()<<endl;
     int f=0;
     if (Q.empty() == false) //queue is not empty
@@ -252,14 +246,19 @@ void bfs(int x,int y,int visited[20][20],Board b,int c)
             if (visited[v[i].first][v[i].second] == 0) //vertex i in the edge list of vertex node is unvisited
             {
                 f++;
+                if(b.arr[v[i].first][v[i].second]==0)
                 Q.push(make_pair(make_pair(v[i].first,v[i].second),p.second+1));
+                else
+                    Q.push(make_pair(make_pair(v[i].first,v[i].second),p.second));
                 visited[v[i].first][v[i].second] = 1;
             }
     Q.pop();
     if (Q.empty() == false) {
         pair<pair<int,int>,int> p=Q.front();
         // for(i=0;i<f;i++)
+        if(b.arr[p.first.first][p.first.second]==0)
         bfs(p.first.first,p.first.second,visited,b,c+1); //run bfs from the next vertex
+        else bfs(p.first.first,p.first.second,visited,b,c);
     }
 }
 
@@ -430,7 +429,9 @@ void PlayerMove::generateLeft()
                     {
                         MIND=temp;
                         mind=temp;
+                        if(x!=7)
                         d=dir=2;
+                        else d=dir=0;
                         p=closestPair(i,j,dir,b,2);
                     }
                 }
@@ -506,7 +507,9 @@ void PlayerMove::generateRight()
                     {
                         MIND=temp;
                         mind=temp;
+                        if(j<14)
                         d=dir=3;
+                        else d=dir=1;
                         p=closestPair(i,j,dir,b,1);
                     }
                 }
@@ -785,4 +788,33 @@ void deleteTree(ComputerMove * c,PlayerMove *p)
         }
         else delete c;
     }
+}
+
+int whoHasWon(Board b)
+{
+    for(int i=0;i<15;i+=2)
+    {
+        for(int j=1;j<=15;j+=2)
+        {
+            if(b.arr[0][i]==2&&b.arr[7][j]==2)
+            {
+                int a[20][20]={0};
+                if(b.isConnected(0,i,7,j,a))
+                    return 2;
+            }
+        }
+    }
+    for(int i=0;i<8;i++)
+    {
+        for(int j=0;j<8;j++)
+        {
+            if(b.arr[i][i%2]==1&&b.arr[j][14+(j%2)]==1)
+            {
+                int a[20][20]={0};
+                if(b.isConnected(i,i%2,j,14+(j%2),a))
+                    return 1;
+            }
+        }
+    }
+    return 0;
 }
