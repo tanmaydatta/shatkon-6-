@@ -82,6 +82,8 @@ void controlhex::move()
         cout<<"right"<<endl;
         f=1;
     }
+    if(whoHasWon(root->left->b)==2)
+        n=root->left;
     // if(n1==2)
 //        n=root->left;
     int flag=0;
