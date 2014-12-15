@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/logo">
+        <file>hex.bmp</file>
+    </qresource>
+</RCC>

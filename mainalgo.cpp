@@ -14,6 +14,8 @@
 #include <utility>
 #include <cstring>
 #include <cassert>
+#include "firstwindow.h"
+#include "won.h"
 using namespace std;
 
 
@@ -831,3 +833,9 @@ int whoHasWon(Board b)
     }
     return 0;
 }
+
+
+//void winappret(firstwindow *f,won *w)
+//{
+//    return f->prog;
+//}

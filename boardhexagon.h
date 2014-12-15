@@ -12,16 +12,13 @@ class BoardHexagon : public QGraphicsPolygonItem
 {
 public:
     BoardHexagon(QGraphicsItem *parent = 0);
-    ~BoardHexagon(){}
-    void focusInEvent(QFocusEvent*);
-    void focusOutEvent(QFocusEvent*);
-    void hoverEnterEvent(QGraphicsSceneHoverEvent*);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
-    void hoverMoveEvent(QGraphicsSceneHoverEvent*);
-    void dragEnterEvent(QGraphicsSceneDragDropEvent*);
-    void dragLeaveEvent(QGraphicsSceneDragDropEvent*);
-    void dragMoveEvent(QGraphicsSceneDragDropEvent*);
-    void dropEvent(QGraphicsSceneDragDropEvent *);
+    virtual ~BoardHexagon();
+    virtual void focusInEvent(QFocusEvent*)=0;
+    virtual void focusOutEvent(QFocusEvent*)=0;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent*)=0;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent*)=0;
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent*)=0;
+
 };
 
 #endif // BOARDHEXAGON_H

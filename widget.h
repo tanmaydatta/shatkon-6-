@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QGraphicsItem>
+#include <QCoreApplication>
 
 class Widget : public QWidget
 {
@@ -11,6 +12,7 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = 0);
     void makeDraggable(QGraphicsItem *);
+    void addfunctionality(QApplication *);
     ~Widget();
 };
 

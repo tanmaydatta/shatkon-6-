@@ -4,11 +4,15 @@
 #include <QMouseEvent>
 #include <QCoreApplication>
 #include <QWidget>
+#include "firstwindow.cpp"
 #include "mainalgo.cpp"
+
 int controlhex::pla=1;
+int win=0;
 controlhex *hexagon[8][20];
 controlhex::controlhex(int i) {
    colorstat=i;
+   //prog=p;
 }
 
 /*void controlhex::setplayer(int i) {
@@ -33,7 +37,23 @@ void controlhex::setstatuscol(int color) {
 }
 
 
-void controlhex::move()
+int controlhex::move(int i)
+{
+    cout<<"whoiswinnig"<<endl;
+    Board b;
+    for(int i=0;i<8;i++)
+    {
+        for(int j=i%2;j<16;j+=2)
+        {
+            b.arr[i][j]=hexagon[i][j]->colorstat;
+        }
+    }
+    win=whoHasWon(b);
+     cout<<win<<endl;
+    return win+2;
+}
+
+int controlhex::move()
 {
     cout<<"nga"<<endl;
     Board b;
@@ -83,10 +103,10 @@ void controlhex::move()
         cout<<"right"<<endl;
         f=1;
     }
+    if(whoHasWon(root->left->b)==2)
+        n=root->left;
     // if(n1==2)
-        n=root->right;
-        if(whoHasWon(root->left->b)==2)
-            n=root->left;
+//        n=root->right;
     int flag=0;
         int flag1=0,flag2=0;
         for(int i=0;i<=7;i++)
@@ -168,100 +188,121 @@ void controlhex::move()
         if(!flag)
             b=n->b;
         int xx=2;
-        while(xx--)
+        try
         {
-            for(int i=0;i<8;i++)
+            while(xx--)
             {
-                for(int j=i%2;j<16;j+=2)
+                for(int i=0;i<8;i++)
                 {
-                    if(b.arr[i][j]!=hexagon[i][j]->colorstat) {
-                        f1=1;
-                        hexagon[i][j]->setBrush(QBrush(Qt::red));
-                        hexagon[i][j]->colorstat = b.arr[i][j];
+                    for(int j=i%2;j<16;j+=2)
+                    {
+                        if(b.arr[i][j]!=hexagon[i][j]->colorstat) {
+                            f1=1;
+                            hexagon[i][j]->setBrush(QBrush(Qt::red));
+                            hexagon[i][j]->colorstat = b.arr[i][j];
+                        }
                     }
-                }
-                if(f1)
-                    break;
-            }
-            if(f1==0)
-            {
-                if(f==0)
-                    n=root->right;
-                else n=root->left;
-                b=n->b;
-            }
-            else break;
-        }
-        if(f1==0)
-        {
-            for(int i=7;i>=0;i--)
-            {
-                for(int j=i%2;j<16;j+=2)
-                {
-                    if(hexagon[i][j]->colorstat==0) {
-                        f1=1;
-                        hexagon[i][j]->setBrush(QBrush(Qt::red));
-                        hexagon[i][j]->colorstat = 2;
-                        b.arr[i][j]=2;
+                    if(f1)
                         break;
-                    }
                 }
-                if(f1)
-                    break;
+                if(f1==0)
+                {
+                    if(f==0)
+                        n=root->right;
+                    else n=root->left;
+                    b=n->b;
+                }
+                else break;
+            }
+            if(xx==1)
+                throw 1;
+        }
+        catch(int i)
+        {
+            if(f1==0&&i)
+            {
+                for(int i=0;i<8;i++)
+                {
+                    for(int j=i%2;j<16;j+=2)
+                    {
+                        if(hexagon[i][j]->colorstat==0) {
+                            f1=1;
+                            hexagon[i][j]->setBrush(QBrush(Qt::red));
+                            hexagon[i][j]->colorstat = b.arr[i][j];
+                            break;
+                        }
+                    }
+                    if(f1)
+                        break;
+                }
             }
         }
-        cout<<whoHasWon(b)<<endl;
+
+
+        //if(controlhex::count>14)
+        win=whoHasWon(b);
+         cout<<win<<endl;
         deleteTree(NULL,root);
+    return win;
 }
+
+
 
 void controlhex::focusInEvent(QFocusEvent*)
 {
     qDebug() << this->toolTip() << Q_FUNC_INFO;
-//    if(controlhex::pla==1&&this->colorstat==0){
 
-//            this->setBrush(QBrush(Qt::blue));
-//            this->setstatuscol(1);
 
-//        controlhex::pla=2;
-//    }
-    if(controlhex::pla==2){
-        if (this->colorstat==0) {
-            this->setBrush(QBrush(Qt::red));
-            this->setstatuscol(2);
+    cout<<check<<endl;
+    if(check==2){
+        if(controlhex::pla==2){
+            if (this->colorstat==0) {
+                this->setBrush(QBrush(Qt::red));
+                this->setstatuscol(2);
+//                move(1);
+                if(move(1)==4) {
+                    won tellwon(4);
+                }
+            }
+            controlhex::pla=1;
+
         }
-        controlhex::pla=1;
+        else
+        {
+            if (this->colorstat==0) {
+                this->setBrush(QBrush(Qt::blue));
+                this->setstatuscol(1);
+                move(1);
+                if(move(1)==3) {
+                    won tellwon(3);
+                }
+            }
+            controlhex::pla=2;
+
+        }
     }
     else
     {
         if (this->colorstat==0) {
-            this->setBrush(QBrush(Qt::green));
+            this->setBrush(QBrush(Qt::blue));
             this->setstatuscol(1);
-
-//        controlhex::pla=2;
-//            move();
         }
     }
-//    move();
 }
 
 void controlhex::focusOutEvent(QFocusEvent*)
 {
-/*    qDebug() << this->toolTip() << Q_FUNC_INFO;
-    if(player=2) {
-        if (this->colorstat==0) {
-            this->setBrush(QBrush(Qt::red));
-            this->setstatuscol(1);
+    int a;
+    qDebug() << this->toolTip() << Q_FUNC_INFO;
+    if(check==1) {
+    a=move();
+        if(a==1) {
+             won tellwon(1);
         }
-        //player=2;
+        else if(a==2){
+             won tellwon(2);
+        }
     }
-    else {
-        if (this->colorstat==0) {
-            this->setBrush(QBrush(Qt::blue));
-            this->setstatuscol(1);
-        }
-        //player=1;
-    }*/
-    move();
 }
 
 
@@ -269,7 +310,7 @@ void controlhex::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 {
 //    qDebug() << this->toolTip() << Q_FUNC_INFO;
 //    if (this->colorstat==0)
-//        this->setBrush(QBrush(Qt::magenta));
+//        this->setBrush(QBrush(Qt::gray));
 }
 
 void controlhex::hoverLeaveEvent(QGraphicsSceneHoverEvent*)

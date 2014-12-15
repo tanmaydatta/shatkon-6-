@@ -1,15 +1,15 @@
 #ifndef CONTROLHEX_H
 #define CONTROLHEX_H
 #include "boardhexagon.h"
-#include <utility>
-using namespace std;
+
+
 class controlhex: public BoardHexagon {
 //    BoardHexagon *link;
 
     int posx;
     int posy;
     int colorstat;
-
+   // QApplication *prog;
 
 public:
     controlhex(int i);
@@ -22,7 +22,8 @@ public:
     void hoverEnterEvent(QGraphicsSceneHoverEvent*);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
     void hoverMoveEvent(QGraphicsSceneHoverEvent*);
-    void move();
+    int move();
+    int move(int i);
 };
 
 

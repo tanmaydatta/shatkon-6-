@@ -6,10 +6,13 @@
 #include <QPolygonF>
 #include <qmath.h>
 #include "boardhexagon.h"
-#include "controlhex.h"
+//#include "controlhex.h"
 #include "controlhex.cpp"
 #include <QPushButton>
-//using namespace MainAlgo;
+#include <stdio.h>
+#include <iostream>
+//#include "firstwindow.cpp"
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
 {
@@ -40,7 +43,7 @@ Widget::Widget(QWidget *parent)
 //    int px=1;
 //    int py=1;
 
-
+   // controlhex *hexagon[8][8];
 
     for(int r = 0; r < h; r++)
         {
@@ -57,9 +60,8 @@ Widget::Widget(QWidget *parent)
                     hexagon[r][j] = new controlhex(0);
                     hexagon[r][j]->setPolygon(polygon);
                     scene->addItem(hexagon[r][j]);
-                    hexagon[r][j]->setposit(r,j);
                     hexagon[r][j]->setPos(dx * c, side * 1.5 * r);
-                    hexagon[r][j]->setToolTip(QString::number(r) + "," + QString::number(j));// + "," + QString::number(hexagon[r][j]->retcol()) );//+ "," + hexagon[r][j]->pla);
+                    hexagon[r][j]->setToolTip(QString::number(r) + "," + QString::number(j) + "," + QString::number(hexagon[r][j]->retcol()) );//+ "," + hexagon[r][j]->pla);
                     hexagon[r][j]->setstatuscol(0);
                     j=j+2;
 //                    hexagon[r][j]->setposit(r,j);
@@ -72,12 +74,12 @@ Widget::Widget(QWidget *parent)
             }
 //            px++;
         }
-        hexagon[0][0]->setBrush(QBrush(Qt::red));
-        hexagon[0][0]->setstatuscol(2);
 
     //================================================================================
-
-
+    if(check!=2){
+        hexagon[0][0]->setBrush(QBrush(Qt::red));
+        hexagon[0][0]->setstatuscol(2);
+    }
 
 
     view->setRenderHint(QPainter::Antialiasing);
@@ -89,8 +91,17 @@ Widget::Widget(QWidget *parent)
     this->setLayout(hbox);
     this->resize(900, 500);
 
+/*    QPushButton *quitbutton = new QPushButton("Quit");
+    QObject::connect(quitbutton,SIGNAL(clicked()),this,SLOT(quit()));
+    hbox->addWidget(quitbutton);
 
-   // hbox
+/*    //quitbutton->show();
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(this);
+    layout->addWidget(quitbutton);
+    mainwindow->setLayout(layout);
+    mainwindow->show();
+*/
 }
 
 //void Widget::makeDraggable(QGraphicsItem *item)
@@ -100,6 +111,25 @@ Widget::Widget(QWidget *parent)
 //    item->setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 //    item->setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
 //}
+
+/*void Widget::addfunctionality(QApplication *app) {
+
+    QWidget *mainwindow = new QWidget;
+    mainwindow->setWindowTitle("Hex");
+
+    QPushButton *quitbutton = new QPushButton("Quit");
+    QObject::connect(quitbutton,SIGNAL(clicked()),this,SLOT(QCoreApplication::quit()));
+    std::cout<<"quit\n";
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(this);
+    layout->addWidget(quitbutton);
+
+    mainwindow->setLayout(layout);
+    mainwindow->show();
+
+
+}
+*/
 
 Widget::~Widget()
 {
