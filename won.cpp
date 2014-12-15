@@ -7,14 +7,17 @@
 //#include "main.cpp"
 
 
-won::won(int p) {
-    player=p;
-    QString *tellwin= new QString;
+won::won(int p)
+{
+    player = p;
+    QString *tellwin = new QString;
     QLabel *winlab = new QLabel;
-    if(player==1||player==3) {
+    if (player == 1 || player == 3)
+    {
         tellwin = new QString("Congrats! BLUE, you have won");
     }
-    else if(player==2) {
+    else if (player == 2)
+    {
         tellwin = new QString("Sorry BLUE, you have lost");
     }
     else
@@ -27,7 +30,7 @@ won::won(int p) {
     QWidget *windisplay = new QWidget;
 
     QPushButton *close = new QPushButton("Exit");
-    QObject::connect(close,SIGNAL(clicked()),windisplay,SLOT(close()));
+    QObject::connect(close, SIGNAL(clicked()), windisplay, SLOT(close()));
 
     QVBoxLayout *vlayout = new QVBoxLayout;
     vlayout->addWidget(winlab);
