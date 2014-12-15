@@ -83,10 +83,10 @@ void controlhex::move()
         cout<<"right"<<endl;
         f=1;
     }
-    if(whoHasWon(root->left->b)==2)
-        n=root->left;
     // if(n1==2)
-//        n=root->right;
+        n=root->right;
+        if(whoHasWon(root->left->b)==2)
+            n=root->left;
     int flag=0;
         int flag1=0,flag2=0;
         for(int i=0;i<=7;i++)
@@ -194,14 +194,15 @@ void controlhex::move()
         }
         if(f1==0)
         {
-            for(int i=0;i<8;i++)
+            for(int i=7;i>=0;i--)
             {
                 for(int j=i%2;j<16;j+=2)
                 {
                     if(hexagon[i][j]->colorstat==0) {
                         f1=1;
                         hexagon[i][j]->setBrush(QBrush(Qt::red));
-                        hexagon[i][j]->colorstat = b.arr[i][j];
+                        hexagon[i][j]->colorstat = 2;
+                        b.arr[i][j]=2;
                         break;
                     }
                 }

@@ -201,7 +201,7 @@ void dfs(int x,int y, vector<pair<int,int> > vec,int a[20][20],Board b,int z)
                                     temp=v1[i]+v2[k];
                                     // if(vec[j].first==0||vec[j].first==7||vec[j].second==15||vec[j].second==0||vec[j].second==14)
                                     // 	temp=0;
-                                    if(temp<=MIND)
+                                    if(temp<MIND)
                                     {
                                         // cout<<"kwhbcjvwekckwebvcjkvwerjcv";
 //                                        cout<<v1[i]<<" "<<v2[k]<<endl;
@@ -333,9 +333,7 @@ pair<int,pair<int,int> > edgeDistance(int x,int y,int d,Board b,int visited[20][
         return make_pair(p.second,make_pair(x,y));
     if(d==2&&x==7)
         return make_pair(p.second,make_pair(x,y));
-    if(d==3&&y==14)
-        return make_pair(p.second,make_pair(x,y));
-    if(d==3&&y==15)
+    if(d==3&&y>=14)
         return make_pair(p.second,make_pair(x,y));
     vector<pair<int,int> > v=b.connectedPoints(x,y,0);
     if(d==1||d==3)
@@ -462,7 +460,7 @@ void PlayerMove::generateLeft()
     else {
         Board B=b;
         int f=0;
-        for(int i=0;i<=7;i++)
+        for(int i=7;i>=0;i--)
         {
             for(int j=i%2;j<=15;j+=2)
             {
@@ -543,7 +541,7 @@ void PlayerMove::generateRight()
     else {
         Board B=b;
         int f=0;
-        for(int i=0;i<=7;i++)
+        for(int i=7;i>=0;i--)
         {
             for(int j=0;j<=15;j+=2)
             {
@@ -693,7 +691,8 @@ int Board::isConnected(int x1,int y1,int x2,int y2,int a[20][20])
         //if(a[v][i] && !vec[v][j])
         if (!a[vec[j].first][vec[j].second])
         {
-            return isConnected(vec[j].first,vec[j].second, x2,y2,a);
+            if(isConnected(vec[j].first,vec[j].second, x2,y2,a))
+                return 1;
         }
     // if(vec.size()==0)
     return 0;
